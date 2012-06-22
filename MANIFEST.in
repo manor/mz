@@ -1,0 +1,3 @@
+include mz\unimod.xml
+include mz\COPYING
+include mz\COPYING.LESSER
