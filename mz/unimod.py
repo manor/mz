@@ -127,6 +127,12 @@ class UnimodDatabase(object):
         else:
             return False
 
+    def mods(self):
+            """Returns all possible mods.
+            """
+            mod_list = self.utree('.//umod:mod')
+            return map(lambda x: x.get('title'), mod_list)
+
     def get_mod_delta(self, mod_name, mass='monoisotopic'):
         '''Searches for a mod by name--which name applies depends on the mod
         (see unimod.org help for details). Returns monoisotopic or average mass.
