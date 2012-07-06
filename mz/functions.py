@@ -26,25 +26,29 @@ from random import randint, sample
 from collections import defaultdict
 
 from mz import myData, logger_message
-from unimod import UnimodDatabase, LookupError
+#from unimod import UnimodDatabase, LookupError
+#
+#try:
+#    # load the unimod database
+#    unimod = UnimodDatabase(os.path.join(myData, 'unimod.xml'))
+#
+#    AW = unimod.elements # atomic masses
+#    amino_acids = unimod.amino_acids # amino acid masses
+#except IOError:
+#    # this shouldn't prevent multiplierz in general from functioning,
+#    # although of course anything that relies on unimod will be broken
+#    logger_message(50, ('Warning: %s not found.\n'
+#                        'Please download a copy from http://www.unimod.org\n'
+#                        'or use the copy on your local Mascot server')
+#                   % (os.path.join(myData, 'unimod.xml')))
+#
+#    unimod = None
+#    AW = None
+#    amino_acids = None
 
-try:
-    # load the unimod database
-    unimod = UnimodDatabase(os.path.join(myData, 'unimod.xml'))
-
-    AW = unimod.elements # atomic masses
-    amino_acids = unimod.amino_acids # amino acid masses
-except IOError:
-    # this shouldn't prevent multiplierz in general from functioning,
-    # although of course anything that relies on unimod will be broken
-    logger_message(50, ('Warning: %s not found.\n'
-                        'Please download a copy from http://www.unimod.org\n'
-                        'or use the copy on your local Mascot server')
-                   % (os.path.join(myData, 'unimod.xml')))
-
-    unimod = None
-    AW = None
-    amino_acids = None
+import mod
+AW = mod.AW
+amino_acids = mod.amino_acids
 
 # dictionary of modification shorthand
 mod_dictionary = {'p': 'Phospho',
@@ -933,26 +937,32 @@ def mz_pep_decode(peptide):
                               (0.0,)))
                 else: # mod name (this will raise an exception if invalid)
                     m.append((mB.group(2),
-                              unimod.get_mod_delta(mB.group(2)),
-                              (0.0,) + unimod.get_mod_neutral_loss(mB.group(2), AA)))
+                              mod.delta[mB.group(2)],
+                              (0.0,) + mod.neutral_losses[(mB.group(2), AA)]))
+                    #m.append((mB.group(2),
+                    #          unimod.get_mod_delta(mB.group(2)),
+                    #          (0.0,) + unimod.get_mod_neutral_loss(mB.group(2), AA)))
         else: # abbreviation
             m = [(mA.group(2),
-                  unimod.get_mod_delta(mod_dictionary[mA.group(2)]),
-                  (0.0,) + unimod.get_mod_neutral_loss(mod_dictionary[mA.group(2)], AA))]
+                  mod.delta[mod_dictionary[mA.group(2)]],
+                  (0.0,) + mod.neutral_losses[mod_dictionary[mA.group(2)], AA])]
+            #m = [(mA.group(2),
+            #      unimod.get_mod_delta(mod_dictionary[mA.group(2)]),
+            #      (0.0,) + unimod.get_mod_neutral_loss(mod_dictionary[mA.group(2)], AA))]
 
-        # note: the first neutral loss is always 0.0, so that the mod delta is reflected in
-        # the default set of ions. additional neutral losses (with corresponding labels) are
-        # available if you set labels=True
-        for mod,mod_delta,mod_neutral_losses in m:
-            if mod not in mod_set:
-                vm_masses[len(vm_masses) + 1] = mod_delta
-                neutral_loss[len(vm_masses)] = mod_neutral_losses
-                mod_set[mod] = len(vm_masses)
+            # note: the first neutral loss is always 0.0, so that the mod delta is reflected in
+            # the default set of ions. additional neutral losses (with corresponding labels) are
+            # available if you set labels=True
+            for a_mod,mod_delta,mod_neutral_losses in m:
+                if a_mod not in mod_set:
+                    vm_masses[len(vm_masses) + 1] = mod_delta
+                    neutral_loss[len(vm_masses)] = mod_neutral_losses
+                    mod_set[a_mod] = len(vm_masses)
 
-            if mA.end() < len(peptide):
-                mods[len(pep_cleaner.sub('', peptide[:mA.end() + 1]))].add(mod_set[mod])
-            else:
-                mods[len(sequence) + 1].add(mod_set[mod])
+                if mA.end() < len(peptide):
+                    mods[len(pep_cleaner.sub('', peptide[:mA.end() + 1]))].add(mod_set[a_mod])
+                else:
+                    mods[len(sequence) + 1].add(mod_set[a_mod])
 
     mods = [frozenset(m) for m in mods]
 
