@@ -1,5 +1,5 @@
-#Copyright 2012 Manor Askenazi
-#This is a "light" version of the multiplierz platform.
+# Copyright 2013 Manor Askenazi
+# This is a "light" version of the multiplierz platform.
 #
 # Copyright 2008 Dana-Farber Cancer Institute
 # multiplierz is distributed under the terms of the GNU Lesser General Public License
@@ -30,7 +30,7 @@ and mzURL (web-based data access)
 
 """
 
-__author__ = 'Jignesh Parikh, James Webber'
+__author__ = 'Jignesh Parikh, James Webber, Manor Askenazi'
 
 import cPickle
 import os
@@ -211,7 +211,7 @@ class File(object):
 
         Example:
         >>> data_file = 'C:\\Documents and Settings\\User\\Desktop\\example.RAW'
-        >>> mz_file = mzAPI.mzFile(data_file)
+        >>> mz_file = mz.API.File(data_file)
 
         """
 
