@@ -228,8 +228,8 @@ class File(object):
             mzWiff.mzFile.__init__(self, data_file, **kwargs)
         elif data_file.lower().endswith('.raw'):
             import raw
-            self.__class__ = raw.mzFile
-            raw.mzFile.__init__(self, data_file, **kwargs)
+            self.__class__ = raw.File
+            raw.File.__init__(self, data_file, **kwargs)
         elif data_file.lower().endswith('.mzml') or data_file.lower().endswith('.mzml.gz'):
             import mzML
             self.__class__ = mzML.mzFile
