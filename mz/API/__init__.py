@@ -230,6 +230,10 @@ class File(object):
             import raw
             self.__class__ = raw.File
             raw.File.__init__(self, data_file, **kwargs)
+        elif data_file.lower().endswith('.mzdb'):
+            import mzdb
+            self.__class__ = mzdb.File
+            mzdb.File.__init__(self, data_file, **kwargs)
         elif data_file.lower().endswith('.mzml') or data_file.lower().endswith('.mzml.gz'):
             import mzML
             self.__class__ = mzML.mzFile
