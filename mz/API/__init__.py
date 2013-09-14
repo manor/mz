@@ -39,39 +39,39 @@ import sys
 
 from mz import logger_message
 
-if sys.platform == 'win32':
-    import pythoncom
-    from win32com.shell import shell
-
-    # windows function to follow links
-    def follow_link(data_file):
-        link = pythoncom.CoCreateInstance (
-            shell.CLSID_ShellLink,
-            None,
-            pythoncom.CLSCTX_INPROC_SERVER,
-            shell.IID_IShellLink
-        )
-        link.QueryInterface(pythoncom.IID_IPersistFile).Load(data_file)
-
-        # GetPath returns the name and a WIN32_FIND_DATA structure
-        # which we're ignoring. The parameter indicates whether
-        # shortname, UNC or the "raw path" are to be
-        # returned.
-
-        data_file,_ = link.GetPath(shell.SLGP_UNCPRIORITY)
-
-        return data_file
-
-elif 'readlink' in dir(os):
-    # *nix function to follow symlinks.
-    # This is of limited utility until we can open files
-    # on *nix, of course.
-    def follow_link(data_file):
-        res = os.readlink(data_file)
-        if os.path.isabs(res):
-            return res
-        else:
-            return os.path.join(os.path.dirname(data_file), res)
+##if sys.platform == 'win32':
+##    import pythoncom
+##    from win32com.shell import shell
+##
+##    # windows function to follow links
+##    def follow_link(data_file):
+##        link = pythoncom.CoCreateInstance (
+##            shell.CLSID_ShellLink,
+##            None,
+##            pythoncom.CLSCTX_INPROC_SERVER,
+##            shell.IID_IShellLink
+##        )
+##        link.QueryInterface(pythoncom.IID_IPersistFile).Load(data_file)
+##
+##        # GetPath returns the name and a WIN32_FIND_DATA structure
+##        # which we're ignoring. The parameter indicates whether
+##        # shortname, UNC or the "raw path" are to be
+##        # returned.
+##
+##        data_file,_ = link.GetPath(shell.SLGP_UNCPRIORITY)
+##
+##        return data_file
+##
+##elif 'readlink' in dir(os):
+##    # *nix function to follow symlinks.
+##    # This is of limited utility until we can open files
+##    # on *nix, of course.
+##    def follow_link(data_file):
+##        res = os.readlink(data_file)
+##        if os.path.isabs(res):
+##            return res
+##        else:
+##            return os.path.join(os.path.dirname(data_file), res)
 
 
 def make_info_file(data_file, **kwargs):
@@ -215,8 +215,8 @@ class File(object):
 
         """
 
-        if data_file.lower().endswith('.lnk') or os.path.islink(data_file):
-            data_file = follow_link(data_file)
+##        if data_file.lower().endswith('.lnk') or os.path.islink(data_file):
+##            data_file = follow_link(data_file)
 
         if data_file.lower().startswith('http://'):
             import mzURL
