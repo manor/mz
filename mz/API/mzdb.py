@@ -295,6 +295,4 @@ class File(mzAPImzFile):
         else:
             the_scan = scanNum
         extra = self.extra_info(the_scan)
-        print the_scan
-        print extra["Monoisotopic M/Z"]
         return (extra["Monoisotopic M/Z"],int(extra["Charge State"]))
