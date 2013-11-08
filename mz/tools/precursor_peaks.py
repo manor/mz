@@ -29,7 +29,8 @@ from scipy import mean, median, pi, sqrt
 import mz.fit as fit
 import mz.API as API
 
-from mz import myData, myTemp, logger_message
+from mz import logger_message
+#from mz import myData, myTemp, logger_message
 from mz.tools import mz_image
 from mz.functions import mz_pep_format
 
