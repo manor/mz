@@ -25,6 +25,9 @@ import re
 
 from collections import defaultdict
 
+import tempfile
+os.environ['MPLCONFIGDIR'] = tempfile.mkdtemp()
+
 import matplotlib
 
 from matplotlib.figure import Figure
