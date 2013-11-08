@@ -25,7 +25,8 @@ import re
 from random import randint, sample
 from collections import defaultdict
 
-from mz import myData, logger_message
+from mz import logger_message
+#from mz import myData, logger_message
 #from unimod import UnimodDatabase, LookupError
 #
 #try:
