@@ -67,7 +67,7 @@ __all__ = ['mz_image', 'multifile', 'precursor_peaks']
 
 # import these so they'll always be present in mzTools
 import mz_image
-import multifile
+#import multifile
 import precursor_peaks
 
 # import mz.report as Report
