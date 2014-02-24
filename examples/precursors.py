@@ -3,8 +3,6 @@ import mz.functions
 import time
 import sys
 
-print sys.argv
-
 fname = ""
 target_scan_list = set()
 if len(sys.argv) > 1 :
