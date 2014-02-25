@@ -1,4 +1,4 @@
-#Copyright 2012 Manor Askenazi
+#Copyright 2014 Manor Askenazi 
 #This is a "light" version of the multiplierz platform.
 #
 # Copyright 2008 Dana-Farber Cancer Institute
@@ -21,10 +21,6 @@
 
 
 from distutils.core import setup
-
-# import os
-
-#from mz import __version__, _get_home
 from mz import __version__
 
 packages = ['mz',
@@ -35,8 +31,6 @@ packages = ['mz',
 
 mz_data = ['COPYING','COPYING.LESSER','unimod.xml']
 
-# data_files = ['mz/unimod.xml']
-
 setup(
     name='mz',
     version=__version__,
@@ -45,8 +39,7 @@ setup(
     packages=packages,
     package_data={ '': ['LICENSE.txt'],
                    'mz': mz_data },
-
-    # data_files = [(os.path.join(_get_home(), '.mz'), data_files)],
+    install_requires=["comtypes"],
     url='https://github.com/manor/mz',
-    description='"Lightweight" Mass Spectrometry/Proteomics Toolkit'
+    description='Package-based Mass Spectrometry/Proteomics Toolkit'
 )
