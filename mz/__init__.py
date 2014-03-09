@@ -20,7 +20,7 @@
 # along with multiplierz.  If not, see <http://www.gnu.org/licenses/>.
 
 __author__ = 'Jignesh Parikh, James Webber, Manor Askenazi'
-__version__ = '1.2.1'
+__version__ = '1.2.2'
 
 __all__ = ['API', 'Functions', 'Tools', 'Report',
            'myHome', 'myData', 'logger_message']
