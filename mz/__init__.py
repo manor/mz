@@ -1,4 +1,4 @@
-#Copyright 2012 Manor Askenazi
+#Copyright 2015 Manor Askenazi
 #This is a "light" version of the multiplierz platform.
 #
 # Copyright 2008 Dana-Farber Cancer Institute
@@ -20,7 +20,7 @@
 # along with multiplierz.  If not, see <http://www.gnu.org/licenses/>.
 
 __author__ = 'Jignesh Parikh, James Webber, Manor Askenazi'
-__version__ = '1.2.2'
+__version__ = '1.3.3'
 
 __all__ = ['API', 'Functions', 'Tools', 'Report',
            'myHome', 'myData', 'logger_message']

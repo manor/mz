@@ -130,38 +130,24 @@ class File(mzAPImzFile):
                 if scan_mode == 'MS1':
                     mz = 0.0
                 else:
-		    # Attempts to get precursor, first by GetPrecursorMassForScanNum, then from the trailer, then from
-		    # the filter. This seems necessary since the trailer isn't always filled, even when GetPrecursorMassForScanNum
-		    # gives a reasonable answer... More guidance from the vendor would be helpful.
-		    nScanNum = c_long(scan)
-		    nMSOrder = c_long(int(scan_mode[2:]))
-		    dMass = c_double()
-		    retval = self.source.GetPrecursorMassForScanNum(nScanNum,nMSOrder,byref(dMass))
-		    if retval :
-		        if debug :
-			    print retval
-			return None
-		    mz = dMass.value
-                    if mz == 0.0:
-                        header_fields = comtypes.automation.VARIANT()
-                        num_fields = c_long()
-                        retval = self.source.GetTrailerExtraLabelsForScanNum(scan, header_fields, comtypes.byref(num_fields))
+                    header_fields = comtypes.automation.VARIANT()
+                    num_fields = c_long()
+                    retval = self.source.GetTrailerExtraLabelsForScanNum(scan, header_fields, comtypes.byref(num_fields))
+                    if retval:
+                        if debug:
+                            print retval
+                        return None
+
+                    if 'Monoisotopic M/Z:' in header_fields.value:
+                        mz_value = comtypes.automation.VARIANT()
+                        retval = self.source.GetTrailerExtraValueForScanNum(scan, u'Monoisotopic M/Z:', mz_value)
                         if retval:
                             if debug:
-                               print retval
+                                print retval
                             return None
-                        if 'Monoisotopic M/Z:' in header_fields.value:
-                            mz_value = comtypes.automation.VARIANT()
-                            retval = self.source.GetTrailerExtraValueForScanNum(scan, u'Monoisotopic M/Z:', mz_value)
-                            if retval:
-                                if debug:
-                                    print retval
-                                return None
-                            mz = mz_value.value
-			    if mz == 0.0 :
-			        mz =  float(mz_re.search(filter_str.value).group(1))
-                        else:
-                            mz = float(mz_re.search(filter_str.value).group(1))
+                        mz = mz_value.value
+                    else:
+                        mz = float(mz_re.search(filter_str.value).group(1))
                 self._headers.append((scan_time.value, # scan time
                                       mz, # scan m/z from header, or 0 if MS1
                                       scan, # scan name == scan number
@@ -477,22 +463,6 @@ class File(mzAPImzFile):
             return None
         vals = dict(zip( map(lambda x: str(x[:-1]), labels.value) , map(_to_float, values.value) ))
         return vals["Ion Injection Time (ms)"]
-
-    def trueMS2ScanPrecursor(self,scanNum):
-        if isinstance(scanNum, float):
-            the_scan = c_long(self.scanForTime(scanNum))
-        else:
-            the_scan = c_long(scanNum)
-	nScanNum = c_long(scanNum)
-	nMSOrder = c_long(2)
-	dMass = c_double()
-
-        retval = self.source.GetPrecursorMassForScanNum(nScanNum,nMSOrder,byref(dMass))
-        if retval :
-            if debug :
-                print retval
-            return None
-        return dMass.value
 
     def scanPrecursor(self,scanNum):
         if isinstance(scanNum, float):

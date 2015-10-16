@@ -1,4 +1,4 @@
-#Copyright 2014 Manor Askenazi 
+#Copyright 2015 Manor Askenazi 
 #This is a "light" version of the multiplierz platform.
 #
 # Copyright 2008 Dana-Farber Cancer Institute
