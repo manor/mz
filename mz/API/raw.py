@@ -146,7 +146,7 @@ class File(mzAPImzFile):
                                 print retval
                             return None
                         mz = mz_value.value
-                    else:
+                    if mz == 0.0:
                         mz = float(mz_re.search(filter_str.value).group(1))
                 self._headers.append((scan_time.value, # scan time
                                       mz, # scan m/z from header, or 0 if MS1
