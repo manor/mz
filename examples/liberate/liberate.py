@@ -94,10 +94,10 @@ if len(sys.argv) < 2 :
     import os
     fnames = [f for f in os.listdir(".") if f.endswith(".RAW") or f.endswith(".raw")]
     for fname in fnames:
-    os_start_time = time.time()
+        os_start_time = time.time()
         os.system("python liberate.py %s" % (fname))
-    os_stop_time = time.time()
-    print "%s extracted in %.0f seconds" % (fname,os_stop_time - os_start_time)
+        os_stop_time = time.time()
+        print "%s extracted in %.0f seconds" % (fname,os_stop_time - os_start_time)
 else:
     fname = sys.argv[1]
     extract_file_into_db(fname)
